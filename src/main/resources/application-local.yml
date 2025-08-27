@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: agentic-rag
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: qwen3:8b
+          temperature: 0.7
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ai_stories
+    username: teste
+    password: teste
+    driver-class-name: org.postgresql.Driver
+  vectorstore:
+    pgvector:
+      initialize-schema: true
+      embedding-dimension: 4096
+  cloud:
+    config:
+      server:
+        s3:
+          bucket: "translations"
+          endpoint: http://s3.localhost.localstack.cloud:4566/
+        sqs:
+          queue-name: "translation-jobs"
+          endpoint: http://localhost:4566

@@ -1,0 +1,25 @@
+services:
+  pgvector:
+    image: 'pgvector/pgvector:pg16'
+    environment:
+      - 'POSTGRES_DB=ai_stories'
+      - 'POSTGRES_PASSWORD=teste'
+      - 'POSTGRES_USER=teste'
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432'
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - SERVICES=s3,sqs
+      - HOSTNAME_EXTERNAL=localstack
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
+    command:
+      - /etc/bootstrap.sh
